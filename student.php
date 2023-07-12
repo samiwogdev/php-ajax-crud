@@ -128,25 +128,69 @@
             </div>
         </div>
 
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Welcome Admin
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Student Information Table
+                        
+                        <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#studentAddModal">
+                            Add Student
+                        </button>
+                    </h4>
+                </div>
+                <div class="card-body">
 
-                                <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#studentAddModal">
-                                    Add Student
-                                </button>
-                            </h4>
-                        </div>
-                        <div class="card-body">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Course</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            require 'dbcon.php';
 
-                        </div>
-                    </div>
+                            $query = "SELECT * FROM students";
+                            $query_run = mysqli_query($con, $query);
+
+                            if(mysqli_num_rows($query_run) > 0)
+                            {
+                                foreach($query_run as $student)
+                                {
+                                    ?>
+                                    <tr>
+                                        <td><?= $student['id'] ?></td>
+                                        <td><?= $student['name'] ?></td>
+                                        <td><?= $student['email'] ?></td>
+                                        <td><?= $student['phone'] ?></td>
+                                        <td><?= $student['course'] ?></td>
+                                        <td>
+                                            <button type="button" value="<?=$student['id'];?>" class="viewStudentBtn btn btn-info btn-sm">View</button>
+                                            <button type="button" value="<?=$student['id'];?>" class="editStudentBtn btn btn-success btn-sm">Edit</button>
+                                            <button type="button" value="<?=$student['id'];?>" class="deleteStudentBtn btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                            
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -174,6 +218,10 @@
                         $('#saveStudent')[0].reset();
                          alertify.set('notifier','position', 'top-right');
                         alertify.success(res.message);
+                        
+                         $('#myTable').load(location.href + " #myTable"); //reload table only
+                    }else if(res.status == 500) {
+                        alert(res.message);
                     }
                 }
                 
