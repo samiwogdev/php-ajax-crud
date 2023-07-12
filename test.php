@@ -25,7 +25,7 @@
                     <form id="saveStudent">
                         <div class="modal-body">
 
-                            <div id="errorMessage" class="alert alert-warning d-none"></div>
+                            <div id="errorMessage" class="alert alert-warning ">test</div>
 
                             <div class="mb-3">
                                 <label for="">Name</label>
@@ -152,33 +152,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script>
-            $(document).on('submit', '#saveStudent', function (e) {
-            e.preventDefault();
-            var formData  = new FormData(this);
-            formData.append("save_student_but", true); //add submit form button name value manually
-            $.ajax({
-                type: "POST",
-                url: "code.php",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response){
-                    var res = jQuery.parseJSON(response)
-                    if(res.status == 422){
-                        $("#errorMessage").removeClass('d-none');
-                        $("#errorMessage").text(res.message);
-                    }else if(res.status == 200){
-
-                        $('#errorMessage').addClass('d-none');
-                        $('#studentAddModal').modal('hide');
-                        $('#saveStudent')[0].reset();
-                         alertify.set('notifier','position', 'top-right');
-                        alertify.success(res.message);
-                    }
-                }
-                
-            });
-    });
+        $(document).on('submit')
         </script>
     </body>
 </html>
